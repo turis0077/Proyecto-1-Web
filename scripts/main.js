@@ -1,5 +1,5 @@
 import { fetchPosts } from './api.js';
-import { showLoading, hideLoading, showError } from './ui.js';
+import { showLoading, hideLoading, showError, renderPosts } from './ui.js';
 
 const initApp = async () => {
     const containerId = 'app';
@@ -7,9 +7,8 @@ const initApp = async () => {
 
     try {
         const posts = await fetchPosts();
-        console.log('Posts loaded:', posts);
         hideLoading(containerId);
-        // Next: renderPosts
+        renderPosts(containerId, posts);
     } catch (error) {
         showError(containerId, 'No se pudieron cargar las publicaciones.');
     }
