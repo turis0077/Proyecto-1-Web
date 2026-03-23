@@ -10,3 +10,14 @@ export const fetchPosts = async () => {
         throw error;
     }
 };
+
+export const fetchPostById = async (id) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts/${id}`);
+        if (!response.ok) throw new Error('Error al cargar la publicación');
+        return await response.json();
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+};
