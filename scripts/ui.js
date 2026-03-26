@@ -46,3 +46,35 @@ export const renderPostDetail = (containerId, post) => {
         </article>
     `;
 };
+
+export const renderPagination = (paginationId, totalPages, currentPage) => {
+    const wrapper = document.getElementById(paginationId);
+    if (!wrapper) return;
+ 
+    wrapper.innerHTML = '';
+ 
+    const btnPrev = document.createElement('button');
+    btnPrev.className = 'btn-page';
+    btnPrev.textContent = '< Anterior';
+    btnPrev.disabled = currentPage <= 1;
+    btnPrev.addEventListener('click', () => onPageChange(currentPage - 1));
+ 
+    const pageIndicator = document.createElement('span');
+    pageIndicator.className = 'page-indicator';
+    pageIndicator.textContent = `Página ${currentPage} de ${totalPages}`;
+ 
+    const btnNext = document.createElement('button');
+    btnNext.className = 'btn-page';
+    btnNext.textContent = 'Siguiente >';
+    btnNext.disabled = currentPage >= totalPages;
+    btnNext.addEventListener('click', () => onPageChange(currentPage + 1));
+ 
+    wrapper.appendChild(btnPrev);
+    wrapper.appendChild(pageIndicator);
+    wrapper.appendChild(btnNext);
+};
+
+export const hidePagination = (paginationId) => {
+    const wrapper = document.getElementById(paginationId);
+    if (wrapper) wrapper.innerHTML = '';
+};
