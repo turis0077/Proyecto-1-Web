@@ -23,6 +23,11 @@ export const renderPosts = (containerId, posts) => {
     const container = document.getElementById(containerId);
     if (!container) return;
 
+    if (posts.length === 0) {
+        container.innerHTML = '<div class="loading">No se encontraron publicaciones con los filtros aplicados.</div>';
+        return;
+    }
+
     const postsHtml = posts.map(post => `
         <article class="post-card">
             <h2 class="post-title">${post.title}</h2>

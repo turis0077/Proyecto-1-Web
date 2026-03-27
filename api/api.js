@@ -1,9 +1,11 @@
 const API_BASE_URL = 'https://jsonplaceholder.typicode.com';
 
-export const fetchPosts = async (page = 1, limit = 10) => {
+export const fetchPosts = async (page = 1, limit = 10, userId = null) => {
     try {
-        const url = `${API_BASE_URL}/posts?_page=${page}&_limit=${limit}`;
-        const response = await fetch(url);
+        const params = new URLSearchParams({ _page: page, _limit: limit });
+        if (userId) params.append('userId', userId);
+ 
+        const response = await fetch(`${API_BASE_URL}/posts?${params}`);
         if (!response.ok) throw new Error('Error al cargar publicaciones');
         return await response.json();
     } catch (error) {

@@ -1,4 +1,4 @@
-import { fetchPosts } from '../api/api.js';
+import { fetchPosts, fetchPostById } from '../api/api.js';
 import { applyFilters } from '../filters/filters.js';
 import { loadFiltersTemplate, renderFilters } from '../filters/ui-filters.js';
 
@@ -7,6 +7,7 @@ import {
     hideLoading,
     showError,
     renderPosts,
+    renderPostDetail,
     renderPagination,
     hidePagination,
 } from '../ui/ui.js';
@@ -23,6 +24,7 @@ let currentPage = 1;
 let activeFilters = {
     searchText: '',
     category: '',
+    userId: '',
 };
 
 let cachedPosts = [];
@@ -38,7 +40,8 @@ const loadPage = async (page) => {
     hidePagination(paginationId);
  
     try {
-        cachedPosts  = await fetchPosts(currentPage, postsPerPage);
+        const userId = activeFilters.userId ? Number(activeFilters.userId) : null;
+        cachedPosts  = await fetchPosts(currentPage, postsPerPage, userId);
         
         hideLoading(containerId);
 
@@ -50,8 +53,14 @@ const loadPage = async (page) => {
 };
 
 const handleApplyFilters = (newFilters) => {
+    const userChanged = newFilters.userId !== activeFilters.userId;
     activeFilters = { ...newFilters };
-    renderWithFilters();
+ 
+    if (userChanged) {
+        loadPage(currentPage);
+    } else {
+        renderWithFilters();
+    }
 };
 
 const handlePageChange = (newPage) => {
@@ -61,10 +70,22 @@ const handlePageChange = (newPage) => {
     loadPage(safePage);
 };
 
-const handlePostClick = (event) => {
-    if (event.target.classList.contains('btn-more')) {
-        const postId = event.target.getAttribute('data-id');
-        console.log("Clic en el post:", postId);
+const handlePostClick = async (e) => {
+    if (e.target.classList.contains('btn-more')) {
+        const postId = e.target.getAttribute('data-id');
+        showLoading(containerId);
+        hidePagination(paginationId)
+        try {
+            const post = await fetchPostById(postId);
+            hideLoading(containerId);
+            renderPostDetail(containerId, post);
+        } catch (error) {
+            showError(containerId, 'No se pudo cargar el detalle de la publicación.');
+        }
+    }
+
+    if (e.target.id === 'btn-back') {
+        loadPage(currentPage);
     }
 };
 
