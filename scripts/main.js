@@ -1,14 +1,52 @@
 import { fetchPosts, fetchPostById } from './api.js';
-import { showLoading, hideLoading, showError, renderPosts, renderPostDetail } from './ui.js';
+import { 
+    showLoading,
+    hideLoading,
+    showError,
+    renderPosts,
+    renderPostDetail,
+    renderPagination,
+    hidePagination,
+} from './ui.js';
 
 const containerId = 'app';
+const paginationId = 'paginacion';
+const postsPerPage = 10;
+const totalPosts = 100;
+const totalPages = Math.ceil(totalPosts / postsPerPage);
+
+let currentPage = 1;
+
+const loadPage = async (page) => {
+    currentPage = page;
+    showLoading(containerId);
+    hidePagination(paginationId);
+ 
+    try {
+        const posts = await fetchPosts(currentPage, postsPerPage);
+        hideLoading(containerId);
+        renderPosts(containerId, posts);
+ 
+        renderPagination(paginationId, currentPage, totalPages, handlePageChange);
+    } catch {
+        showError(containerId, 'No se pudieron cargar las publicaciones.');
+    }
+};
+
+const handlePageChange = (newPage) => {
+    if (newPage < 1 || newPage > totalPages) return;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    loadPage(newPage);
+};
 
 const handlePostClick = async (e) => {
     if (e.target.classList.contains('btn-more')) {
-        const id = e.target.getAttribute('data-id');
+        const postId = e.target.getAttribute('data-id');
         showLoading(containerId);
+        hidePagination(paginationId);
+        
         try {
-            const post = await fetchPostById(id);
+            const post = await fetchPostById(postId);
             hideLoading(containerId);
             renderPostDetail(containerId, post);
         } catch (error) {
@@ -17,22 +55,11 @@ const handlePostClick = async (e) => {
     }
 
     if (e.target.id === 'btn-back') {
-        initApp();
-    }
-};
-
-const initApp = async () => {
-    showLoading(containerId);
-    try {
-        const posts = await fetchPosts();
-        hideLoading(containerId);
-        renderPosts(containerId, posts);
-    } catch (error) {
-        showError(containerId, 'No se pudieron cargar las publicaciones.');
+        loadPage(currentPage);
     }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    initApp();
+    loadPage(currentPage);
     document.getElementById(containerId).addEventListener('click', handlePostClick);
 });

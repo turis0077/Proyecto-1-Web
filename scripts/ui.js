@@ -47,7 +47,7 @@ export const renderPostDetail = (containerId, post) => {
     `;
 };
 
-export const renderPagination = (paginationId, totalPages, currentPage) => {
+export const renderPagination = (paginationId, currentPage, totalPages, onPageChange) => {
     const wrapper = document.getElementById(paginationId);
     if (!wrapper) return;
  
