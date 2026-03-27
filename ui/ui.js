@@ -53,26 +53,25 @@ export const renderPagination = (paginationId, currentPage, totalPages, onPageCh
  
     wrapper.innerHTML = '';
  
-    const btnPrev = document.createElement('button');
-    btnPrev.className = 'btn-page';
-    btnPrev.textContent = '< Anterior';
-    btnPrev.disabled = currentPage <= 1;
-    btnPrev.addEventListener('click', () => onPageChange(currentPage - 1));
+    const createButton = (text, disabled, onClick) => {
+        const btn = document.createElement('button');
+        btn.className  = 'btn-page';
+        btn.textContent = text;
+        btn.disabled   = disabled;
+        btn.addEventListener('click', onClick);
+        return btn;
+    };
  
     const pageIndicator = document.createElement('span');
-    pageIndicator.className = 'page-indicator';
+    pageIndicator.className   = 'page-indicator';
     pageIndicator.textContent = `Página ${currentPage} de ${totalPages}`;
  
-    const btnNext = document.createElement('button');
-    btnNext.className = 'btn-page';
-    btnNext.textContent = 'Siguiente >';
-    btnNext.disabled = currentPage >= totalPages;
-    btnNext.addEventListener('click', () => onPageChange(currentPage + 1));
- 
-    wrapper.appendChild(btnPrev);
+    wrapper.appendChild(createButton('«', currentPage <= 1, () => onPageChange(1)));
+    wrapper.appendChild(createButton('<', currentPage <= 1, () => onPageChange(currentPage - 1)));
     wrapper.appendChild(pageIndicator);
-    wrapper.appendChild(btnNext);
-};
+    wrapper.appendChild(createButton('>', currentPage >= totalPages, () => onPageChange(currentPage + 1)));
+    wrapper.appendChild(createButton('»', currentPage >= totalPages, () => onPageChange(totalPages)));
+    };
 
 export const hidePagination = (paginationId) => {
     const wrapper = document.getElementById(paginationId);

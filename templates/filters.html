@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <template id="tmpl-filters">
+        <div class="filters-bar">
+            <div class="filters-row">
+                <div class="filter-group">
+                    <label class="filter-label" for="filter-search">Buscar</label>
+                    <input id="filter-search" class="filter-input" type="text" placeholder="Título o contenido…" maxlength="100" />
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label" for="filter-category">Categoría</label>
+                    <select id="filter-category" class="filter-select">
+                        <option value="">Todas</option>
+                    </select>
+                </div>
+                <div class="filters-actions">
+                    <button id="btn-apply-filters" class="btn-apply">Aplicar filtros</button>
+                    <button id="btn-clear-filters" class="btn-clear">Limpiar</button>
+                </div>
+            </div>
+        </div>
+    </template>
+</body>
+</html>
