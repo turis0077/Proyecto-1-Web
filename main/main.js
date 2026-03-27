@@ -1,4 +1,4 @@
-import { fetchPosts, fetchPostById } from './api.js';
+import { fetchPosts, fetchPostById } from '../api/api.js';
 import { 
     showLoading,
     hideLoading,
@@ -7,7 +7,7 @@ import {
     renderPostDetail,
     renderPagination,
     hidePagination,
-} from './ui.js';
+} from '../ui/ui.js';
 
 const containerId = 'app';
 const paginationId = 'paginacion';
