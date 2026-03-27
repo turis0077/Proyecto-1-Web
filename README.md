@@ -1,6 +1,10 @@
 # Blog Web Application
 
-Proyecto #1 para el curso de Sistemas y Tecnologías Web - UVG.
+Proyecto #1 para el curso de Sistemas y Tecnologías Web - UVG. <br>
+
+Grupo: 
+* Axel Cruz - 24656
+* Enya Gálvez - 24693
 
 ## Descripción
 Una aplicación web tipo blog para consultar, crear y gestionar publicaciones de forma dinámica mediante el consumo de APIs.
