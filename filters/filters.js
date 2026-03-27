@@ -32,11 +32,30 @@ const filterByCategory = (posts, category) => {
     return posts.filter(post => allowedUserIds.includes(post.userId));
 };
 
+const sortPosts = (posts, field, direction) => {
+    if (!field || !direction) return posts;
+ 
+    return [...posts].sort((a, b) => {
+        let valueA = a[field];
+        let valueB = b[field];
+ 
+        if (typeof valueA === 'string') {
+            valueA = valueA.toLowerCase();
+            valueB = valueB.toLowerCase();
+        }
+ 
+        if (valueA < valueB) return direction === 'asc' ? -1 : 1;
+        if (valueA > valueB) return direction === 'asc' ? 1 : -1;
+        return 0;
+    });
+};
+
 export const applyFilters = (posts, activeFilters) => {
-    const { searchText, category} = activeFilters;
+    const { searchText, category, sortField, sortDir } = activeFilters;
  
     let result = filterByText(posts, searchText);
     result = filterByCategory(result, category);
+    result = sortPosts(result, sortField, sortDir);
  
     return result;
 };

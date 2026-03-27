@@ -17,12 +17,27 @@
                         <option value="">Todas</option>
                     </select>
                 </div>
-                
+
                 <div class="filter-group">
                     <label class="filter-label" for="filter-user">Autor</label>
                     <select id="filter-user" class="filter-select">
                         <option value="">Todos</option>
                     </select>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label" for="filter-sort-field">Ordenar por</label>
+                    <div class="filter-sort-row">
+                        <select id="filter-sort-field" class="filter-select">
+                            <option value="">Sin orden</option>
+                            <option value="id">ID</option>
+                            <option value="title">Título</option>
+                        </select>
+                        <select id="filter-sort-dir" class="filter-select">
+                            <option value="asc">↑ Asc</option>
+                            <option value="desc">↓ Desc</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="filters-actions">

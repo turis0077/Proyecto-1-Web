@@ -60,14 +60,20 @@ const fillUserOptions = (clone, selectedUserId) => {
 
 const restoreValues = (clone, current) => {
     const searchInput = clone.querySelector('#filter-search');
+    const sortField = clone.querySelector('#filter-sort-field');
+    const sortDir = clone.querySelector('#filter-sort-dir');
  
     if (searchInput) searchInput.value = current.searchText ?? '';
+    if (sortField) sortField.value = current.sortField ?? '';
+    if (sortDir) sortDir.value = current.sortDir ?? '';
 };
 
 const collectFilters = () => ({
     searchText: document.getElementById('filter-search').value.trim(),
     category: document.getElementById('filter-category').value,
     userId: document.getElementById('filter-user').value,
+    sortField: document.getElementById('filter-sort-field').value,
+    sortDir: document.getElementById('filter-sort-dir').value,
 });
 
 const attachFilterEvents = (onApply) => {
@@ -79,6 +85,8 @@ const attachFilterEvents = (onApply) => {
         document.getElementById('filter-search').value = '';
         document.getElementById('filter-category').value = '';
         document.getElementById('filter-user').value = '';
-        onApply({ searchText: '', category: '', userId: '' });
+        document.getElementById('filter-sort-field').value = '';
+        document.getElementById('filter-sort-dir').value = 'asc';
+        onApply({ searchText: '', category: '', userId: '', sortField: '', sortDir: 'asc' });
     });
 };

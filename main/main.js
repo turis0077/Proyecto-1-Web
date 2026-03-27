@@ -25,6 +25,8 @@ let activeFilters = {
     searchText: '',
     category: '',
     userId: '',
+    sortField: '',
+    sortDir: 'asc',
 };
 
 let cachedPosts = [];
