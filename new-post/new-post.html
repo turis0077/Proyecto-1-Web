@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nueva Publicación - DevBlog UVG</title>
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="containerHeader">
+            <h1>DevBlog UVG</h1>
+            <a href="../index.html" class="btn-back-home" style="color: white; text-decoration: none;">← Volver al Inicio</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="form-container">
+            <h2 class="form-title">Crear Nueva Publicación</h2>
+            <p class="form-description">Comparte tus conocimientos con la comunidad.</p>
+            
+            <form id="new-post-form" class="post-form">
+                <div class="form-group">
+                    <label for="title" class="form-label">Título</label>
+                    <input type="text" id="title" class="form-input" placeholder="Ej: Introducción a JavaScript Modular">
+                </div>
+
+                <div class="form-group">
+                    <label for="userId" class="form-label">ID de Usuario</label>
+                    <input type="number" id="userId" class="form-input" placeholder="Ej: 1">
+                </div>
+
+                <div class="form-group">
+                    <label for="body" class="form-label">Contenido</label>
+                    <textarea id="body" class="form-textarea" placeholder="Escribe aquí el contenido de tu publicación..."></textarea>
+                </div>
+
+                <div id="form-error" class="error-message" style="display: none; color: #ef4444; margin-bottom: 1rem;"></div>
+                <div id="form-success" class="success-message" style="display: none; color: #10b981; margin-bottom: 1rem;">¡Publicación creada con éxito!</div>
+
+                <div class="form-actions">
+                    <button type="submit" id="btn-submit" class="btn-submit">Publicar</button>
+                    <a href="../index.html" class="btn-cancel">Cancelar</a>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script type="module" src="new-post.js"></script>
+</body>
+</html>
