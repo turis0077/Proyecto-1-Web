@@ -43,17 +43,18 @@ const handleSubmit = async (e) => {
 
     try {
         const result = await createPost(postData);
-        console.log('Post creado:', result);
+        console.log('Post creado exitosamente:', result);
         
+        successMsg.textContent = `¡Excelente! Publicación "${result.title}" creada con éxito. Redirigiendo...`;
         successMsg.style.display = 'block';
         form.reset();
 
         setTimeout(() => {
             window.location.href = '../index.html';
-        }, 2000);
+        }, 2500);
 
     } catch (err) {
-        errorMsg.textContent = 'Ocurrió un error al intentar crear la publicación.';
+        errorMsg.textContent = 'Error de red: No se pudo conectar con el servidor para crear la publicación.';
         errorMsg.style.display = 'block';
         btnSubmit.disabled = false;
         btnSubmit.textContent = 'Publicar';
