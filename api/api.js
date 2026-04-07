@@ -42,3 +42,21 @@ export const fetchPostsByUserId = async (userId) => {
         throw error;
     }
 };
+
+export const createPost = async (postData) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts`, {
+            method: 'POST',
+            body: JSON.stringify(postData),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        });
+
+        if (!response.ok) throw new Error('Error al crear la publicación');
+        return await response.json();
+    } catch (error) {
+        console.error('[api] createPost:', error);
+        throw error;
+    }
+};
