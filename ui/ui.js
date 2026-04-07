@@ -32,6 +32,9 @@ export const renderPosts = (containerId, posts) => {
         <article class="post-card">
             <h2 class="post-title">${post.title}</h2>
             <p class="post-body">${post.body.substring(0, 100)}...</p>
+            <span class="post-category" style="font-size: 0.8em; color: #666; text-transform: uppercase; font-weight: bold;">
+                ${post.categoryLabel || 'Sin categoría'}
+            </span>
             <button class="btn-more" data-id="${post.id}">Ver más</button>
         </article>
     `).join('');
@@ -47,6 +50,9 @@ export const renderPostDetail = (containerId, post) => {
         <article class="post-detail">
             <button id="btn-back" class="btn-back">← Volver</button>
             <h2 class="post-title-detail">${post.title}</h2>
+            <span class="post-category" style="font-size: 0.8em; color: #666; text-transform: uppercase; font-weight: bold;">
+                ${post.categoryLabel || 'Sin categoría'}
+            </span>
             <p class="post-body-detail">${post.body}</p>
         </article>
     `;

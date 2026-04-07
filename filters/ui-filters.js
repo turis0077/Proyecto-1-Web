@@ -1,4 +1,4 @@
-import { CATEGORY_LABELS } from './filters.js';
+import { CATEGORY_LABELS, CATEGORIES } from './filters.js';
 
 export const loadFiltersTemplate = async () => {
     const response = await fetch('./templates/filters.html');
@@ -22,7 +22,7 @@ export const renderFilters = (filterId, current, onApply) => {
     const clone = template.content.cloneNode(true);
  
     fillCategoryOptions(clone, current.category);
-    fillUserOptions(clone, current.userId);
+    fillUserOptions(clone, current.userId, current.category);
     restoreValues(clone, current);
  
     container.innerHTML = '';
@@ -47,11 +47,18 @@ const fillCategoryOptions = (clone, selectedCategory) => {
 const fillUserOptions = (clone, selectedUserId) => {
     const select = clone.querySelector('#filter-user');
     if (!select) return;
+
+    select.innerHTML = '<option value="">Todos</option>';
+
+    let allowedUsers = Array.from({ length: 10 }, (_, i) => i + 1);
  
-    Array.from({ length: 10 }, (_, i) => {
-        const uid       = i + 1;
-        const option    = document.createElement('option');
-        option.value    = uid;
+    if (selectedCategory && CATEGORIES[selectedCategory]) {
+        allowedUsers = CATEGORIES[selectedCategory];
+    }
+
+    allowedUsers.forEach(uid => {
+        const option = document.createElement('option');
+        option.value = uid;
         option.textContent = `Usuario ${uid}`;
         option.selected = String(uid) === String(selectedUserId);
         select.appendChild(option);
@@ -77,6 +84,12 @@ const collectFilters = () => ({
 });
 
 const attachFilterEvents = (onApply) => {
+    const categorySelect = document.getElementById('filter-category');
+
+    categorySelect.addEventListener('change', (e) => {
+        fillUserOptions(document, '', e.target.value);
+    });
+
     document.getElementById('btn-apply-filters').addEventListener('click', () => {
         onApply(collectFilters());
     });
@@ -84,7 +97,7 @@ const attachFilterEvents = (onApply) => {
     document.getElementById('btn-clear-filters').addEventListener('click', () => {
         document.getElementById('filter-search').value = '';
         document.getElementById('filter-category').value = '';
-        document.getElementById('filter-user').value = '';
+        fillUserOptions(document, '', '');
         document.getElementById('filter-sort-field').value = '';
         document.getElementById('filter-sort-dir').value = 'asc';
         onApply({ searchText: '', category: '', userId: '', sortField: '', sortDir: 'asc' });

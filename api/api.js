@@ -24,3 +24,21 @@ export const fetchPostById = async (id) => {
         throw error;
     }
 };
+
+export const fetchPostsByUserId = async (userId) => {
+    try {
+        const requests = userId.map(uid =>
+            fetch(`${API_BASE_URL}/posts?userId=${uid}`)
+                .then(res => {
+                    if (!res.ok) throw new Error(`Error al cargar posts del usuario ${uid}`);
+                    return res.json();
+                })
+        );
+
+        const results = await Promise.all(requests);
+        return results.flat();
+    } catch (error) {
+        console.error('[api] fetchPostsByUserId:', error);
+        throw error;
+    }
+};

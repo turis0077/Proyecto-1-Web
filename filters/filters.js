@@ -12,6 +12,20 @@ export const CATEGORY_LABELS = {
     negocios:   'Negocios',
 };
 
+export const getCategoryLabelByUserId = (userId) => {
+    for (const [categoryKey, userIds] of Object.entries(CATEGORIES)) {
+        if (userIds.includes(userId)) {
+            return CATEGORY_LABELS[categoryKey];
+        }
+    }
+    return 'General';
+};
+
+const filterByUserId = (posts, userId) => {
+    if (!userId || userId === '') return posts;
+    return posts.filter(post => String(post.userId) === String(userId));
+};
+
 const filterByText = (posts, searchText) => {
     if (!searchText || searchText.trim() === '') return posts;
  
@@ -55,6 +69,7 @@ export const applyFilters = (posts, activeFilters) => {
  
     let result = filterByText(posts, searchText);
     result = filterByCategory(result, category);
+    result = filterByUserId(result, activeFilters.userId);
     result = sortPosts(result, sortField, sortDir);
  
     return result;
