@@ -60,3 +60,17 @@ export const createPost = async (postData) => {
         throw error;
     }
 };
+
+export const deletePost = async (id) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts/${id}`, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) throw new Error('Error al eliminar la publicación');
+        return true; 
+    } catch (error) {
+        console.error('[api] deletePost:', error);
+        throw error;
+    }
+};
