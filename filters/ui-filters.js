@@ -44,7 +44,7 @@ const fillCategoryOptions = (clone, selectedCategory) => {
     });
 };
 
-const fillUserOptions = (clone, selectedUserId) => {
+const fillUserOptions = (clone, selectedUserId, selectedCategory) => {
     const select = clone.querySelector('#filter-user');
     if (!select) return;
 
