@@ -1,21 +1,46 @@
-# Blog Web Application
+# DevBlog UVG - Blog Web Application
 
-Proyecto #1 para el curso de Sistemas y Tecnologías Web - UVG. <br>
+Este es un proyecto desarrollado para la Universidad del Valle de Guatemala (UVG). Una aplicación web moderna que consume la API de JSONPlaceholder para gestionar y visualizar publicaciones de un blog.
 
-Grupo: 
-* Axel Cruz - 24656
-* Enya Gálvez - 24693
+## 🚀 Funcionalidades
 
-## Descripción
-Una aplicación web tipo blog para consultar, crear y gestionar publicaciones de forma dinámica mediante el consumo de APIs.
+- **Listado Dinámico:** Visualización de publicaciones con carga asíncrona.
+- **Paginación:** Navegación por páginas para optimizar la carga de datos.
+- **Filtros Avanzados:**
+  - Búsqueda por texto en tiempo real.
+  - Filtrado por Categoría (basado en IDs de usuario).
+  - Filtrado por Autor.
+  - Ordenamiento (Ascendente/Descendente).
+- **Gestión de Posts:**
+  - Creación de nuevas publicaciones con validación de formularios.
+  - Vista de detalle de cada publicación.
+  - Eliminación de publicaciones con confirmación.
+- **Diseño Responsivo:** Adaptado para dispositivos móviles, tablets y escritorio.
 
-## Tecnologías
-- HTML5
-- CSS3
-- JavaScript Vanilla
+## 🛠️ Tecnologías Utilizadas
 
-## Requerimientos
-- Consumo de API (DummyJSON / JSONPlaceholder)
-- Renderizado dinámico del DOM
-- Diseño Responsivo
-- Validación de formularios
+- **HTML5:** Estructura semántica.
+- **CSS3:** Estilos avanzados utilizando CSS Variables y Grid/Flexbox.
+- **JavaScript (Vanilla):** Lógica modular (ES6 Modules) sin dependencias externas.
+- **API:** [JSONPlaceholder](https://jsonplaceholder.typicode.com/)
+
+## 📁 Estructura del Proyecto
+
+```text
+/
+├── about/           # Sección de información del equipo
+├── api/             # Módulo de comunicación con la API
+├── filters/         # Lógica y UI de los filtros
+├── main/            # Punto de entrada de la aplicación
+├── new-post/        # Funcionalidad de creación de posts
+├── styles/          # Estilos globales y componentes
+└── ui/              # Componentes de renderizado de interfaz
+```
+
+## 👥 Equipo de Desarrollo
+
+- **Axel Arturo Cruz Lima (24656):** Implementación de funcionalidades de creación, eliminación y arquitectura modular.
+- **Enya Ayleen Gálvez Hernández (24693):** Desarrollo de la estructura base, paginación y sistema de filtrado.
+
+---
+© 2026 Universidad del Valle de Guatemala
