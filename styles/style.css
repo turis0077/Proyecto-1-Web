@@ -424,3 +424,57 @@ body {
     background-color: #ef4444;
     color: white;
 }
+
+/* Responsividad y Pulido Final */
+@media (max-width: 768px) {
+    .containerHeader {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .containerHeader nav {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .containerHeader nav a {
+        margin-right: 0 !important;
+    }
+
+    .filters-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filters-actions {
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    .form-container {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-header h1 {
+        font-size: 1.25rem;
+    }
+
+    .post-title-detail {
+        font-size: 1.5rem;
+    }
+}
+
+/* Animaciones de entrada en tarjetas */
+.post-card {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
