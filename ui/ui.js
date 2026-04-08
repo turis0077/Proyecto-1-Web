@@ -48,7 +48,10 @@ export const renderPostDetail = (containerId, post) => {
 
     container.innerHTML = `
         <article class="post-detail">
-            <button id="btn-back" class="btn-back">← Volver</button>
+            <div class="detail-actions">
+                <button id="btn-back" class="btn-back">← Volver</button>
+                <button id="btn-delete-post" class="btn-delete" data-id="${post.id}">Eliminar Publicación</button>
+            </div>
             <h2 class="post-title-detail">${post.title}</h2>
             <span class="post-category" style="font-size: 0.8em; color: #666; text-transform: uppercase; font-weight: bold;">
                 ${post.categoryLabel || 'Sin categoría'}

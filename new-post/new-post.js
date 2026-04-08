@@ -1,194 +1,132 @@
 import { createPost } from '../api/api.js';
 
-const fromContainerId = 'form-container';
-const feedbackContainerId = 'form-feedback';
-const totalUsers = 10;
+const form = document.getElementById('new-post-form');
+const btnSubmit = document.getElementById('btn-submit');
+const errorMsg = document.getElementById('form-error');
+const successMsg = document.getElementById('form-success');
 
-const validationRules = {
-    title: {
-        required: true,
-        minLength: 5,
-        label: 'Ingresa un título',
-    },
-    body: {
-        required:  true,
-        minLength: 20,
-        label: 'Ingresa un contenido',
-    },
-    userId: {
-        required: true,
-        label: 'Autor',
-    },
+const validateForm = (data) => {
+    if (!data.title || data.title.length < 5) {
+        return 'El título debe tener al menos 5 caracteres.';
+    }
+    if (!data.body || data.body.length < 10) {
+        return 'El contenido debe tener al menos 10 caracteres.';
+    }
+    if (!data.userId) {
+        return 'Debe ingresar un ID de usuario.';
+    }
+    return null;
 };
 
-const validateField = (fieldName, value) => {
-    const rule = VALIDATION_RULES[fieldName];
-    if (!rule) return '';
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Limpiar estados previos
+    errorMsg.style.display = 'none';
+    successMsg.style.display = 'none';
 
-    const trimmed = value.trim();
-
-    if (rule.required && trimmed === '') {
-        return `${rule.label} es obligatorio.`;
-    }
-
-    if (rule.minLength && trimmed.length < rule.minLength) {
-        return `${rule.label} debe tener al menos ${rule.minLength} caracteres.`;
-    }
-
-    return '';
-};
-
-const validateForm = () => {
-    const fields = {
-        title: document.getElementById('post-title')?.value  ?? '',
-        body: document.getElementById('post-body')?.value   ?? '',
-        userId: document.getElementById('post-userId')?.value ?? '',
+    const postData = {
+        title: document.getElementById('title').value.trim(),
+        body: document.getElementById('body').value.trim(),
+        userId: Number(document.getElementById('userId').value)
     };
 
-    const errors = {};
-    let isValid  = true;
-
-    Object.entries(fields).forEach(([fieldName, value]) => {
-        const errorMessage = validateField(fieldName, value);
-        if (errorMessage) {
-            errors[fieldName] = errorMessage;
-            isValid = false;
-        }
-    });
-
-    return { isValid, errors };
-};
-
-const setFieldError = (fieldName, errorMessage) => {
-    const input = document.getElementById(`post-${fieldName}`);
-    const errorSpan = document.getElementById(`error-${fieldName}`);
-    const group     = document.getElementById(`group-${fieldName}`);
-
-    if (!input || !errorSpan || !group) return;
-
-    if (errorMessage) {
-        errorSpan.textContent = errorMessage;
-        group.classList.add('form-group--error');
-    } else {
-        errorSpan.textContent = '';
-        group.classList.remove('form-group--error');
-    }
-};
-
-const clearAllFieldErrors = () => {
-    Object.keys(VALIDATION_RULES).forEach(fieldName => setFieldError(fieldName, ''));
-};
-
-const showFeedback = (type, message) => {
-    const feedbackContainer = document.getElementById(FEEDBACK_ID);
-    if (!feedbackContainer) return;
-
-    feedbackContainer.className = `form-feedback form-feedback--${type}`;
-    feedbackContainer.textContent = message;
-
-    if (type === 'success') {
-        setTimeout(() => {
-            feedbackContainer.textContent = '';
-            feedbackContainer.className   = '';
-        }, 5000);
-    }
-};
-
-const clearFeedback = () => {
-    const feedbackContainer = document.getElementById(FEEDBACK_ID);
-    if (feedbackContainer) {
-        feedbackContainer.textContent = '';
-        feedbackContainer.className   = '';
-    }
-};
-
-const setSubmitLoading = (isLoading) => {
-    const btn = document.getElementById('btn-submit-post');
-    if (!btn) return;
-    btn.disabled     = isLoading;
-    btn.textContent  = isLoading ? 'Publicando…' : 'Publicar';
-};
-
-const collectFormData = () => ({
-    title:  document.getElementById('post-title').value.trim(),
-    body:   document.getElementById('post-body').value.trim(),
-    userId: Number(document.getElementById('post-userId').value),
-});
-
-const handleSubmit = async () => {
-    clearFeedback();
-    clearAllFieldErrors();
-
-    const { isValid, errors } = validateForm();
-
-    if (!isValid) {
-        Object.entries(errors).forEach(([fieldName, message]) => {
-            setFieldError(fieldName, message);
-        });
-        const firstErrorField = Object.keys(errors)[0];
-        document.getElementById(`post-${firstErrorField}`)?.focus();
+    const error = validateForm(postData);
+    if (error) {
+        errorMsg.textContent = error;
+        errorMsg.style.display = 'block';
         return;
     }
 
-    setSubmitLoading(true);
+    btnSubmit.disabled = true;
+    btnSubmit.textContent = 'Enviando...';
 
     try {
-        const postData    = collectFormData();
-        const createdPost = await createPost(postData);
+        const result = await createPost(postData);
+        console.log('Post creado exitosamente:', result);
+        
+        successMsg.textContent = `¡Excelente! Publicación "${result.title}" creada con éxito. Redirigiendo...`;
+        successMsg.style.display = 'block';
+        form.reset();
 
-        showFeedback('success', `Publicación "${createdPost.title}" creada con ID #${createdPost.id}.`);
-        resetForm();
-    } catch {
-        showFeedback('error', 'No se pudo crear la publicación. Intenta de nuevo.');
-    } finally {
-        setSubmitLoading(false);
+        setTimeout(() => {
+            window.location.href = '../index.html';
+        }, 2500);
+
+    } catch (err) {
+        errorMsg.textContent = 'Error de red: No se pudo conectar con el servidor para crear la publicación.';
+        errorMsg.style.display = 'block';
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = 'Publicar';
     }
 };
 
-const resetForm = () => {
-    const title  = document.getElementById('post-title');
-    const body   = document.getElementById('post-body');
-    const userId = document.getElementById('post-userId');
+if (form) {
+    form.addEventListener('submit', handleSubmit);
+}
+import { createPost } from '../api/api.js';
 
-    if (title)  title.value  = '';
-    if (body)   body.value   = '';
-    if (userId) userId.value = '';
+const form = document.getElementById('new-post-form');
+const btnSubmit = document.getElementById('btn-submit');
+const errorMsg = document.getElementById('form-error');
+const successMsg = document.getElementById('form-success');
 
-    clearAllFieldErrors();
+const validateForm = (data) => {
+    if (!data.title || data.title.length < 5) {
+        return 'El título debe tener al menos 5 caracteres.';
+    }
+    if (!data.body || data.body.length < 10) {
+        return 'El contenido debe tener al menos 10 caracteres.';
+    }
+    if (!data.userId) {
+        return 'Debe ingresar un ID de usuario.';
+    }
+    return null;
 };
 
-const loadAndRenderForm = async () => {
-    const response = await fetch('../templates/new-post.html');
-    if (!response.ok) throw new Error('No se pudo cargar el template del formulario.');
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    // Limpiar estados previos
+    errorMsg.style.display = 'none';
+    successMsg.style.display = 'none';
 
-    const html     = await response.text();
-    const parser   = new DOMParser();
-    const doc      = parser.parseFromString(html, 'text/html');
-    const template = doc.querySelector('#tmpl-new-post');
+    const postData = {
+        title: document.getElementById('title').value.trim(),
+        body: document.getElementById('body').value.trim(),
+        userId: Number(document.getElementById('userId').value)
+    };
 
-    if (!template) throw new Error('Template #tmpl-new-post no encontrado.');
+    const error = validateForm(postData);
+    if (error) {
+        errorMsg.textContent = error;
+        errorMsg.style.display = 'block';
+        return;
+    }
 
-    document.head.appendChild(document.adoptNode(template));
+    btnSubmit.disabled = true;
+    btnSubmit.textContent = 'Enviando...';
 
-    const container = document.getElementById(FORM_CONTAINER_ID);
-    const clone     = document.getElementById('tmpl-new-post').content.cloneNode(true);
+    try {
+        const result = await createPost(postData);
+        console.log('Post creado exitosamente:', result);
+        
+        successMsg.textContent = `¡Excelente! Publicación "${result.title}" creada con éxito. Redirigiendo...`;
+        successMsg.style.display = 'block';
+        form.reset();
 
-    fillUserOptions(clone);
-    container.innerHTML = '';
-    container.appendChild(clone);
+        setTimeout(() => {
+            window.location.href = '../index.html';
+        }, 2500);
 
-    attachFormEvents();
+    } catch (err) {
+        errorMsg.textContent = 'Error de red: No se pudo conectar con el servidor para crear la publicación.';
+        errorMsg.style.display = 'block';
+        btnSubmit.disabled = false;
+        btnSubmit.textContent = 'Publicar';
+    }
 };
 
-const fillUserOptions = (clone) => {
-    const select = clone.querySelector('#post-userId');
-    if (!select) return;
-
-    Array.from({ length: TOTAL_USERS }, (_, i) => {
-        const uid          = i + 1;
-        const option       = document.createElement('option');
-        option.value       = uid;
-        option.textContent = `Usuario ${uid}`;
-        select.appendChild(option);
-    });
-};
+if (form) {
+    form.addEventListener('submit', handleSubmit);
+}

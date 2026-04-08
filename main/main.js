@@ -1,4 +1,4 @@
-import { fetchPosts, fetchPostById, fetchPostsByUserId } from '../api/api.js';
+import { fetchPosts, fetchPostById, fetchPostsByUserId, deletePost } from '../api/api.js';
 import { applyFilters, CATEGORIES, getCategoryLabelByUserId } from '../filters/filters.js';
 import { loadFiltersTemplate, renderFilters } from '../filters/ui-filters.js';
 
@@ -103,6 +103,24 @@ const handlePostClick = async (e) => {
             renderPostDetail(containerId, post);
         } catch (error) {
             showError(containerId, 'No se pudo cargar el detalle de la publicación.');
+        }
+    }
+
+    if (e.target.id === 'btn-delete-post') {
+        const postId = e.target.getAttribute('data-id');
+        const confirmed = confirm('¿Estás seguro de que deseas eliminar esta publicación?');
+        
+        if (confirmed) {
+            showLoading(containerId);
+            try {
+                const success = await deletePost(postId);
+                if (success) {
+                    alert('Publicación eliminada correctamente.');
+                    refreshFeed();
+                }
+            } catch (error) {
+                showError(containerId, 'No se pudo eliminar la publicación.');
+            }
         }
     }
 

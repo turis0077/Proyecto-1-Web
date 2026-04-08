@@ -47,14 +47,30 @@ export const createPost = async (postData) => {
     try {
         const response = await fetch(`${API_BASE_URL}/posts`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(postData),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
         });
 
         if (!response.ok) throw new Error('Error al crear la publicación');
         return await response.json();
     } catch (error) {
         console.error('[api] createPost:', error);
+        throw error;
+    }
+};
+
+export const deletePost = async (id) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/posts/${id}`, {
+            method: 'DELETE',
+        });
+
+        if (!response.ok) throw new Error('Error al eliminar la publicación');
+        return true; 
+    } catch (error) {
+        console.error('[api] deletePost:', error);
         throw error;
     }
 };
