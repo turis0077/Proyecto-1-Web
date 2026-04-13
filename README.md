@@ -1,6 +1,8 @@
 # DevBlog UVG - Blog Web Application
 
-This is a a project developed for Universidad del Valle de Guatemala (UVG) as the first project of the web systems and technologies course. A modern web application that consumes the JSONPlaceholder API to manage and display blog posts.
+This is a a project developed for our web systems and technologies course's first project, at Universidad del Valle de Guatemala (UVG). A modern web application that consumes the JSONPlaceholder API to manage and display blog posts. <br>
+
+**Link to the GitHub Pages:** https://turis0077.github.io/Proyecto-1-Web/
 
 ## 🚀 Functionalities
 
